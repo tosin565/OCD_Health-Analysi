@@ -13,3 +13,10 @@ This project aims to provide insight into the OCD (Obsessive-Compulsive Disorder
 - Compulsions Score Category, by Percentage, Avg Obsession & No of Patient
 - Age Category, by Percentage & No of Patient
 ## SQL Quey
+- Query <a href="https://github.com/tosin565/OCD_Health-Analysi/blob/main/OCD_Health_Data.sql">Sql Query</a>
+
+## Power Bi Report
+- Dashboard <a href="https://github.com/tosin565/OCD_Health-Analysi/blob/main/OCD%20Health%20Analysis.pbix">View Darshboard</a>
+
+## Screenshot
+- <a href="https://github.com/tosin565/OCD_Health-Analysi/blob/main/OCD.PNG">Screenshot</a>
