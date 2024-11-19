@@ -1,6 +1,9 @@
 SELECT *
 FROM ocd_patient_dataset
 
+SELECT COUNT(DISTINCT patient_Id)
+FROM ocd_patient_dataset
+
 --Count & PCT Gender that have OCD. Avg Obession & Compulsions Score by Gender
 SELECT Gender, CAST(CAST(COUNT(patient_id) AS DECIMAL (10,2)) * 100 
 /(SELECT CAST(COUNT(patient_id) AS DECIMAL (10,2))
@@ -21,15 +24,17 @@ GROUP BY Ethnicity
 ORDER BY 2
 
 -- Number of People diagnosed Monthly
-SELECT YEAR(OCD_Diagnosis_Date) AS Year_diagnosis,
+SELECT
 MONTH(OCD_Diagnosis_Date) AS Month_diagnosis,
 COUNT(patient_id) No_of_patients
 FROM ocd_patient_dataset
-GROUP BY YEAR(OCD_Diagnosis_Date), MONTH(OCD_Diagnosis_Date)
+GROUP BY MONTH(OCD_Diagnosis_Date)
 ORDER BY 1
 
 --What is the most common Obsession Type and it respective Avg Obsession Score
 SELECT Obsession_Type, COUNT(Patient_ID) No_of_Patient,
+CAST(CAST(count(patient_id) AS DECIMAL(10,2)) * 100/
+(SELECT CAST(count(patient_id) AS DECIMAL(10,2)) FROM ocd_patient_dataset) AS DECIMAL(10,2)) PCT,
 CAST(AVG(CAST(Y_BOCS_Score_Obsessions AS DECIMAL (10,2))) AS DECIMAL (10,2)) Avg_of_Y_BOCS 
 FROM ocd_patient_dataset
 GROUP BY Obsession_Type
@@ -121,20 +126,23 @@ ORDER BY PCT DESC
 --Age Category, by Percentage & No of Patient
 SELECT
 	CASE 
-WHEN Age BETWEEN 0 AND 18 THEN 'Children/Teen'
-WHEN Age BETWEEN 19 AND 35 THEN 'Young Adult'
-WHEN Age BETWEEN 36 AND 60 THEN 'Adult'
-ELSE 'Elder'
+WHEN Age < 31 THEN 'Youth'
+WHEN Age BETWEEN 31 AND 40 THEN 'Young Adult'
+WHEN Age BETWEEN 41 AND 50 THEN 'Adult'
+WHEN Age BETWEEN 51 AND 60 THEN 'Elder'
+ELSE 'Old'
 END AS Age_Category,
 CAST(CAST(SUM(patient_id) AS DECIMAL(10,2)) * 100/
 (SELECT CAST(SUM(patient_id) AS DECIMAL(10,2)) FROM ocd_patient_dataset) AS DECIMAL(10,2)) PCT,
 COUNT(Patient_ID) No_of_Patient
 FROM ocd_patient_dataset
-GROUP BY CASE 
-WHEN Age BETWEEN 0 AND 18 THEN 'Children/Teen'
-WHEN Age BETWEEN 19 AND 35 THEN 'Young Adult'
-WHEN Age BETWEEN 36 AND 60 THEN 'Adult'
-ELSE 'Elder'
+GROUP BY 
+	CASE 
+WHEN Age < 31 THEN 'Youth'
+WHEN Age BETWEEN 31 AND 40 THEN 'Young Adult'
+WHEN Age BETWEEN 41 AND 50 THEN 'Adult'
+WHEN Age BETWEEN 51 AND 60 THEN 'Elder'
+ELSE 'Old'
 END
 ORDER BY PCT DESC
 
